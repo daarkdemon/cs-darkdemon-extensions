@@ -1,0 +1,273 @@
+[
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=anime-world.in&sz=%size%",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/daarkdemon/cs-darkdemon-extensions",
+        "fileSize": 18420,
+        "status": 1,
+        "language": "hi",
+        "authors": [
+            "darkdemon"
+        ],
+        "tvTypes": [
+            "TvSeries",
+            "Movie",
+            "Anime",
+            "Cartoon"
+        ],
+        "version": 5,
+        "internalName": "AnimeWorldProvider",
+        "description": "Please wait for 10seconds to bypass the ads",
+        "url": "https://raw.githubusercontent.com/daarkdemon/cs-darkdemon-extensions/builds/AnimeWorldProvider.cs3",
+        "name": "AnimeWorldProvider"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=bolly2tolly.desi/&sz=%size%",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/daarkdemon/cs-darkdemon-extensions",
+        "fileSize": 20300,
+        "status": 1,
+        "language": "hi",
+        "authors": [
+            "darkdemon"
+        ],
+        "tvTypes": [
+            "TvSeries",
+            "Movie"
+        ],
+        "version": 1,
+        "internalName": "Bolly2TollyProvider",
+        "url": "https://raw.githubusercontent.com/daarkdemon/cs-darkdemon-extensions/builds/Bolly2TollyProvider.cs3",
+        "name": "Bolly2TollyProvider"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=ww1.cinevez.mx&sz=%size%",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/daarkdemon/cs-darkdemon-extensions",
+        "fileSize": 11305,
+        "status": 1,
+        "language": "hi",
+        "authors": [
+            "darkdemon"
+        ],
+        "tvTypes": [
+            "TvSeries",
+            "Movie"
+        ],
+        "version": 2,
+        "internalName": "CinevezProvider",
+        "description": "This website support English/Hindi/Kannada/Malayalam/Tamil/Telugu",
+        "url": "https://raw.githubusercontent.com/daarkdemon/cs-darkdemon-extensions/builds/CinevezProvider.cs3",
+        "name": "CinevezProvider"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=pc9.crichd.com&sz=%size%",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/daarkdemon/cs-darkdemon-extensions",
+        "fileSize": 11660,
+        "status": 1,
+        "language": "en",
+        "authors": [
+            "darkdemon"
+        ],
+        "tvTypes": [
+            "Live"
+        ],
+        "version": 1,
+        "internalName": "CricHDProvider",
+        "url": "https://raw.githubusercontent.com/daarkdemon/cs-darkdemon-extensions/builds/CricHDProvider.cs3",
+        "name": "CricHDProvider"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=ww2.ibomma.cx&sz=%size%",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/daarkdemon/cs-darkdemon-extensions",
+        "fileSize": 17755,
+        "status": 1,
+        "language": "te",
+        "authors": [
+            "darkdemon"
+        ],
+        "tvTypes": [
+            "TvSeries",
+            "Movie"
+        ],
+        "version": 3,
+        "internalName": "IBommaProvider",
+        "url": "https://raw.githubusercontent.com/daarkdemon/cs-darkdemon-extensions/builds/IBommaProvider.cs3",
+        "name": "IBommaProvider"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=mhdtvworld.xyz&sz=%size%",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/daarkdemon/cs-darkdemon-extensions",
+        "fileSize": 17443,
+        "status": 1,
+        "language": "hi",
+        "authors": [
+            "darkdemon"
+        ],
+        "tvTypes": [
+            "Live"
+        ],
+        "version": 3,
+        "internalName": "MHDTVProvider",
+        "description": "This website support English/Hindi/Kannada/Malayalam/Tamil/Telugu live channels and Hindi Old Movies/Malayalam Movies \n For language in Sports: Please check background image[country flag] of the episode",
+        "url": "https://raw.githubusercontent.com/daarkdemon/cs-darkdemon-extensions/builds/MHDTVProvider.cs3",
+        "name": "MHDTVProvider"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=moviesmod.net&sz=%size%",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/daarkdemon/cs-darkdemon-extensions",
+        "fileSize": 20831,
+        "status": 1,
+        "language": "hi",
+        "authors": [
+            "darkdemon"
+        ],
+        "tvTypes": [
+            "TvSeries",
+            "Movie",
+            "Anime"
+        ],
+        "version": 1,
+        "internalName": "MovieModProvider",
+        "url": "https://raw.githubusercontent.com/daarkdemon/cs-darkdemon-extensions/builds/MovieModProvider.cs3",
+        "name": "MovieModProvider"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=nollyverse.com&sz=%size%",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/daarkdemon/cs-darkdemon-extensions",
+        "fileSize": 16973,
+        "status": 1,
+        "language": "en",
+        "authors": [
+            "darkdemon"
+        ],
+        "tvTypes": [
+            "TvSeries",
+            "Movie",
+            "AsianDrama"
+        ],
+        "version": 1,
+        "internalName": "NollyVerseProvider",
+        "url": "https://raw.githubusercontent.com/daarkdemon/cs-darkdemon-extensions/builds/NollyVerseProvider.cs3",
+        "name": "NollyVerseProvider"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=111.90.159.132&sz=%size%",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/daarkdemon/cs-darkdemon-extensions",
+        "fileSize": 11429,
+        "status": 1,
+        "language": "hi",
+        "authors": [
+            "darkdemon"
+        ],
+        "tvTypes": [
+            "TvSeries",
+            "Movie"
+        ],
+        "version": 1,
+        "internalName": "OnlineMoviesHinditProvider",
+        "url": "https://raw.githubusercontent.com/daarkdemon/cs-darkdemon-extensions/builds/OnlineMoviesHinditProvider.cs3",
+        "name": "OnlineMoviesHinditProvider"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=prmovies.bio&sz=%size%",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/daarkdemon/cs-darkdemon-extensions",
+        "fileSize": 13962,
+        "status": 1,
+        "language": "hi",
+        "authors": [
+            "darkdemon"
+        ],
+        "tvTypes": [
+            "TvSeries",
+            "Movie"
+        ],
+        "version": 6,
+        "internalName": "PrmoviesProvider",
+        "url": "https://raw.githubusercontent.com/daarkdemon/cs-darkdemon-extensions/builds/PrmoviesProvider.cs3",
+        "name": "PrmoviesProvider"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=snehiptv.netlify.app&sz=%size%",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/daarkdemon/cs-darkdemon-extensions",
+        "fileSize": 12979,
+        "status": 0,
+        "language": "hi",
+        "authors": [
+            "darkdemon"
+        ],
+        "tvTypes": [
+            "Live"
+        ],
+        "version": 2,
+        "internalName": "SnehIPTVProvider",
+        "description": "This extension provide live channels from Sonyliv, Voot and Jiotv",
+        "url": "https://raw.githubusercontent.com/daarkdemon/cs-darkdemon-extensions/builds/SnehIPTVProvider.cs3",
+        "name": "SnehIPTVProvider"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=jiotv.com&sz=%size%",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/daarkdemon/cs-darkdemon-extensions",
+        "fileSize": 18609,
+        "status": 1,
+        "language": "hi",
+        "authors": [
+            "darkdemon"
+        ],
+        "tvTypes": [
+            "Live"
+        ],
+        "version": 2,
+        "internalName": "SoraJioTVProvider",
+        "description": " JioTV streams from different available sources",
+        "url": "https://raw.githubusercontent.com/daarkdemon/cs-darkdemon-extensions/builds/SoraJioTVProvider.cs3",
+        "name": "SoraJioTVProvider"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=streamblasters.lol&sz=%size%",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/daarkdemon/cs-darkdemon-extensions",
+        "fileSize": 14714,
+        "status": 1,
+        "language": "hi",
+        "authors": [
+            "darkdemon"
+        ],
+        "tvTypes": [
+            "TvSeries",
+            "Movie"
+        ],
+        "version": 4,
+        "internalName": "StreamBlastersProvider",
+        "url": "https://raw.githubusercontent.com/daarkdemon/cs-darkdemon-extensions/builds/StreamBlastersProvider.cs3",
+        "name": "StreamBlastersProvider"
+    },
+    {
+        "iconUrl": "https://www.google.com/s2/favicons?domain=uwatchfree.be&sz=%size%",
+        "apiVersion": 1,
+        "repositoryUrl": "https://github.com/daarkdemon/cs-darkdemon-extensions",
+        "fileSize": 14726,
+        "status": 1,
+        "language": "hi",
+        "authors": [
+            "darkdemon"
+        ],
+        "tvTypes": [
+            "TvSeries",
+            "Movie"
+        ],
+        "version": 3,
+        "internalName": "UWatchFreeProvider",
+        "url": "https://raw.githubusercontent.com/daarkdemon/cs-darkdemon-extensions/builds/UWatchFreeProvider.cs3",
+        "name": "UWatchFreeProvider"
+    }
+]
