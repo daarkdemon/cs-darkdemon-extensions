@@ -1,21 +1,16 @@
-# `Cloudstream3 Plugin Repo Template`
+# `Cloudstream3 Hindi Plugin Repository`
+ > Used to load providers for [Cloudstream](https://recloudstream.github.io/)
 
-Template for a [Cloudstream3](https://github.com/recloudstream) plugin repo
+<!--
+## Steps to install this repo:
+1. Open [Cloudstream](https://recloudstream.github.io/) and go to Settings and click on extensions.
+2. Click on add repository and enter name and this url.
+-->
 
-**⚠️ Make sure you check "Include all branches" when using this template**
-
- 
 ## Getting started with writing your first plugin
-
-This template includes 1 example plugin.
 
 1. Open the root build.gradle.kts, read the comments and replace all the placeholders
 2. Familiarize yourself with the project structure. Most files are commented
 3. Build or deploy your first plugin using:
-   - Windows: `.\gradlew.bat ExampleProvider:make` or `.\gradlew.bat ExampleProvider:deployWithAdb`
-   - Linux & Mac: `./gradlew ExampleProvider:make` or `./gradlew ExampleProvider:deployWithAdb`
-
-## Attribution
-
-This template as well as the gradle plugin and the whole plugin system is **heavily** based on [Aliucord](https://github.com/Aliucord).
-*Go use it, it's a great mobile discord client mod!*
+    - Windows: `.\gradlew.bat ExampleProvider:make` or `.\gradlew.bat ExampleProvider:deployWithAdb`
+    - Linux & Mac: `./gradlew ExampleProvider:make` or `./gradlew ExampleProvider:deployWithAdb`
