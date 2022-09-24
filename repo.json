@@ -1,0 +1,8 @@
+{
+    "name": "darkdemon providers repository",
+    "description": "Providers for India",
+    "manifestVersion": 1,
+    "pluginLists": [
+        "https://raw.githubusercontent.com/daarkdemon/cs-darkdemon-extensions/builds/plugins.json"
+    ]
+}
