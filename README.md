@@ -1,4 +1,4 @@
-# `Cloudstream3 Hindi Plugin Repository`
+# `Cloudstream3 Plugin Repository`
  > Used to load providers for [Cloudstream](https://recloudstream.github.io/)
 
 <!--
