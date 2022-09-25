@@ -60,7 +60,6 @@ class OnlineMoviesHindiProvider : MainAPI() { // all providers must be an instan
 
         val title = document.selectFirst("h2.entry-title")?.text()?.trim() ?: return null
         val poster = fixUrlNull(document.selectFirst("div.gmr-movie-data img")?.attr("src"))
-        //val tags = document.select("div.mvici-left p:nth-child(1) a").map { it.text() }
         val year = document.select("div.gmr-moviedata time").text().trim().split(" ").last()
             .toIntOrNull()
         val tvType = if (document.selectFirst("div.gmr-listseries a")?.text()
@@ -87,13 +86,11 @@ class OnlineMoviesHindiProvider : MainAPI() { // all providers must be an instan
                     episode
                 )
             }
-            println(episodes)
 
             newTvSeriesLoadResponse(title, url, TvType.TvSeries, episodes) {
                 this.posterUrl = poster
                 this.year = year
                 this.plot = description
-                //this.tags = tags
                 this.rating = rating
                 addActors(actors)
                 this.recommendations = recommendations
