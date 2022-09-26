@@ -41,7 +41,7 @@ class StreamBlastersProvider : MainAPI() { // all providers must be an instance 
     }
 
     private fun Element.toSearchResult(): SearchResponse? {
-        val title = this.selectFirst("a")?.text()?.trim() ?: return null
+        val title = this.selectFirst("img")?.attr("alt")?.trim() ?: return null
         val href = fixUrl(this.selectFirst("a")?.attr("href").toString())
         val posterUrl = fixUrlNull(this.selectFirst("img")?.attr("data-src"))
         val quality = getQualityFromString(this.select("span.quality").text())
