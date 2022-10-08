@@ -7,10 +7,11 @@ import com.lagradost.cloudstream3.LoadResponse.Companion.addActors
 import com.lagradost.cloudstream3.LoadResponse.Companion.addTrailer
 import com.lagradost.cloudstream3.mvvm.safeApiCall
 import com.lagradost.cloudstream3.utils.*
+import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 
 class StreamBlastersProvider : MainAPI() { // all providers must be an instance of MainAPI
-    override var mainUrl = "https://streamblasters.lol"
+    override var mainUrl = "https://streamblasters.pics"
     override var name = "StreamBlasters"
     override val hasMainPage = true
     override var lang = "hi"
@@ -56,7 +57,7 @@ class StreamBlastersProvider : MainAPI() { // all providers must be an instance 
         val document = app.get("$mainUrl/?s=$query").document
 
         return document.select(".result-item").mapNotNull {
-            val title = it.select(".title a")?.text()?.trim() ?: return@mapNotNull null
+            val title = it.select(".title a").text().trim()
             val href = fixUrl(it.selectFirst(".title a")?.attr("href").toString())
             val posterUrl = fixUrlNull(it.selectFirst(".thumbnail img")?.attr("src"))
             val quality = getQualityFromString(it.select("span.quality").text())
@@ -140,7 +141,7 @@ class StreamBlastersProvider : MainAPI() { // all providers must be an instance 
             it.attr("data-nume")
         }.apmap { nume ->
             safeApiCall {
-                val source = app.post(
+                val response = app.post(
                     url = "$mainUrl/wp-admin/admin-ajax.php",
                     data = mapOf(
                         "action" to "doo_player_ajax",
@@ -151,8 +152,8 @@ class StreamBlastersProvider : MainAPI() { // all providers must be an instance 
                     referer = data,
                     headers = mapOf("X-Requested-With" to "XMLHttpRequest")
                 ).parsed<ResponseHash>().embed_url
-
-                loadExtractor(source, data, subtitleCallback, callback)
+                val source = Jsoup.parse(response).select("iframe").attr("src")
+                loadExtractor(httpsify(source), data, subtitleCallback, callback)
             }
         }
         return true
