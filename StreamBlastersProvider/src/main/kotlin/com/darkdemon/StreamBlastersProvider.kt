@@ -152,8 +152,8 @@ class StreamBlastersProvider : MainAPI() { // all providers must be an instance 
                     referer = data,
                     headers = mapOf("X-Requested-With" to "XMLHttpRequest")
                 ).parsed<ResponseHash>().embed_url
-                val source = Jsoup.parse(response).select("iframe").attr("src")
-                loadExtractor(httpsify(source), data, subtitleCallback, callback)
+                val source = if(response.contains("iframe")) Jsoup.parse(response).select("iframe").attr("src") else response
+                loadExtractor(source, data, subtitleCallback, callback)
             }
         }
         return true
