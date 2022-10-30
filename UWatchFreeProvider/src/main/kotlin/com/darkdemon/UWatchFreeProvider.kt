@@ -9,7 +9,7 @@ import com.lagradost.cloudstream3.utils.loadExtractor
 import org.jsoup.nodes.Element
 
 class UWatchFreeProvider : MainAPI() { // all providers must be an instance of MainAPI
-    override var mainUrl = "https://uwatchfree.be/"
+    override var mainUrl = "https://uwatchfree.fan/"
     override var name = "UWatchFree"
     override val hasMainPage = true
     override var lang = "hi"
