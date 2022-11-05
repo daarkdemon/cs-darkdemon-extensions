@@ -1,10 +1,12 @@
-
 package com.darkdemon
 
 import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.LoadResponse.Companion.addActors
+import com.lagradost.cloudstream3.extractors.DoodLaExtractor
+import com.lagradost.cloudstream3.extractors.XStreamCdn
 import com.lagradost.cloudstream3.mvvm.safeApiCall
 import com.lagradost.cloudstream3.utils.ExtractorLink
+import com.lagradost.cloudstream3.utils.Qualities
 import com.lagradost.cloudstream3.utils.loadExtractor
 import org.jsoup.nodes.Element
 
@@ -67,41 +69,12 @@ class UWatchFreeProvider : MainAPI() { // all providers must be an instance of M
         val poster = fixUrlNull(document.selectFirst(".moviemeta img")?.attr("src"))
         val tags = document.select("div.moviemeta > p:nth-child(4) a").map { it.text() }
         val yearRegex = Regex("""/(\d{4})/gm""")
-        val year = yearRegex.find(document.select("div.moviemeta > p:nth-child(7)").text())?.groupValues?.getOrNull(1)?.toIntOrNull()
+        val year = yearRegex.find(
+            document.select("div.moviemeta > p:nth-child(7)").text()
+        )?.groupValues?.getOrNull(1)?.toIntOrNull()
         val description = document.selectFirst("div.moviemeta > p:nth-child(9)")?.text()?.trim()
-        val actors = document.select("div.moviemeta > p:nth-child(3) span[itemprop=name]").map { it.text() }
-
-        /*return if (tvType == TvType.TvSeries) {
-            val episodes = if (document.selectFirst("div.les-title strong")?.text().toString()
-                    .contains("Season")
-            ) {
-                document.select("ul.idTabs li").map {
-                    val id = it.select("a").attr("href")
-                    Episode(
-                        data = fixUrl(document.select("div$id iframe").attr("src")),
-                        name = it.select("strong").text()
-                    )
-                }
-            } else {
-                document.select("div.les-content a").map {
-                    Episode(
-                        data = it.attr("href"),
-                        name = it.text(),
-                    )
-                }
-            }
-
-            newTvSeriesLoadResponse(title, url, TvType.TvSeries, episodes) {
-                this.posterUrl = poster
-                this.year = year
-                this.plot = description
-                this.tags = tags
-                this.rating = rating
-                addActors(actors)
-                this.recommendations = recommendations
-                addTrailer(trailer)
-            }
-        } else {*/
+        val actors =
+            document.select("div.moviemeta > p:nth-child(3) span[itemprop=name]").map { it.text() }
         return newMovieLoadResponse(title, url, TvType.Movie, url) {
             this.posterUrl = poster
             this.year = year
@@ -117,27 +90,48 @@ class UWatchFreeProvider : MainAPI() { // all providers must be an instance of M
         subtitleCallback: (SubtitleFile) -> Unit,
         callback: (ExtractorLink) -> Unit
     ): Boolean {
-        app.get(data).document.select("body a:contains(Click to Play)").map { fixUrl(it.attr("href")) }
-            .apmap { source ->
-                safeApiCall {
-                    when {
-                        source.startsWith(mainUrl) -> app.get(
-                            source,
-                            referer = data
-                        ).document.select("#res_video_player_div iframe")
-                            .apmap {
-                                loadExtractor(
-                                    it.attr("src"),
-                                    "$mainUrl/",
-                                    subtitleCallback,
-                                    callback
-                                )
-                            }
-                        else -> {}
-                    }
-                }
+        val doc = app.get(data).document
+        val urls = ArrayList<String>()
+        doc.select(".magnet-link a").map { src ->
+            if (src.attr("href").contains("send.cm")) {
+                val url = app.get(src.attr("href")).document.select("source").attr("src")
+                urls.add(url)
             }
+        }
+        doc.select("body a:contains(Click to Play)").map { fixUrl(it.attr("href")) }
+            .apmap { source ->
+                app.get(
+                    source,
+                    referer = data
+                ).document.select("iframe")
+                    .apmap {
+                        urls.add(it.attr("src"))
+                    }
+            }
+        urls.forEach { url ->
+            if (url.contains("send.cm")) {
+                callback.invoke(
+                    ExtractorLink(
+                        this.name,
+                        this.name,
+                        url,
+                        mainUrl,
+                        quality = Qualities.Unknown.value,
+                    )
+                )
+            } else {
+                loadExtractor(
+                    url,
+                    "$mainUrl/",
+                    subtitleCallback,
+                    callback
+                )
+            }
+        }
         return true
     }
 }
 
+class DoodReExtractor : DoodLaExtractor() {
+    override var mainUrl = "https://dood.re"
+}
