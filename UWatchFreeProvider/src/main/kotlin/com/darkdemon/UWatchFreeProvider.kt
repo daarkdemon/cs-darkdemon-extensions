@@ -2,6 +2,7 @@ package com.darkdemon
 
 import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.LoadResponse.Companion.addActors
+import com.lagradost.cloudstream3.LoadResponse.Companion.addTrailer
 import com.lagradost.cloudstream3.extractors.DoodLaExtractor
 import com.lagradost.cloudstream3.extractors.XStreamCdn
 import com.lagradost.cloudstream3.mvvm.safeApiCall
@@ -75,12 +76,42 @@ class UWatchFreeProvider : MainAPI() { // all providers must be an instance of M
         val description = document.selectFirst("div.moviemeta > p:nth-child(9)")?.text()?.trim()
         val actors =
             document.select("div.moviemeta > p:nth-child(3) span[itemprop=name]").map { it.text() }
-        return newMovieLoadResponse(title, url, TvType.Movie, url) {
-            this.posterUrl = poster
-            this.year = year
-            this.plot = description
-            this.tags = tags
-            addActors(actors)
+        val tvType = if (document.selectFirst(".tritem td:first-child")
+                ?.text()
+                ?.contains(Regex("(?i)(Episode\\s?[0-9]+)")) == true
+        ) TvType.TvSeries else TvType.Movie
+        return if (tvType == TvType.TvSeries) {
+            val episodes = document.select(".tritem").mapNotNull {
+                val href = fixUrl(it.select("a").attr("href") ?: return null)
+                val name = it.selectFirst("td")?.text()?.trim()
+                val seasonRegex = Regex("""Season\s?([0-9]+)""")
+                val season = seasonRegex.find(
+                    document.select(".entry-title").text()
+                )?.groupValues?.getOrNull(1)?.toIntOrNull()
+                val episode = name?.substringAfter("Episode 0")?.substringBefore(":")?.toIntOrNull()
+                Episode(
+                    href,
+                    name,
+                    season,
+                    episode,
+                )
+            }
+
+            newTvSeriesLoadResponse(title, url, TvType.TvSeries, episodes) {
+                this.posterUrl = poster
+                this.year = year
+                this.plot = description
+                this.tags = tags
+                addActors(actors)
+            }
+        } else {
+            newMovieLoadResponse(title, url, TvType.Movie, url) {
+                this.posterUrl = poster
+                this.year = year
+                this.plot = description
+                this.tags = tags
+                addActors(actors)
+            }
         }
     }
 
@@ -92,10 +123,14 @@ class UWatchFreeProvider : MainAPI() { // all providers must be an instance of M
     ): Boolean {
         val doc = app.get(data).document
         val urls = ArrayList<String>()
-        doc.select(".magnet-link a").map { src ->
-            if (src.attr("href").contains("send.cm")) {
-                val url = app.get(src.attr("href")).document.select("source").attr("src")
-                urls.add(url)
+        if (data.contains("player")) {
+            urls.add(app.get(data).document.select("iframe").attr("src"))
+        } else {
+            doc.select(".magnet-link a").map { src ->
+                if (src.attr("href").contains("send.cm")) {
+                    val url = app.get(src.attr("href")).document.select("source").attr("src")
+                    urls.add(url)
+                }
             }
         }
         doc.select("body a:contains(Click to Play)").map { fixUrl(it.attr("href")) }
@@ -108,6 +143,7 @@ class UWatchFreeProvider : MainAPI() { // all providers must be an instance of M
                         urls.add(it.attr("src"))
                     }
             }
+        println(urls)
         urls.forEach { url ->
             if (url.contains("send.cm")) {
                 callback.invoke(
@@ -117,6 +153,24 @@ class UWatchFreeProvider : MainAPI() { // all providers must be an instance of M
                         url,
                         mainUrl,
                         quality = Qualities.Unknown.value,
+                    )
+                )
+            } else if (url.startsWith("https://0gomovies.top")) {
+                val script = app.get(url).text
+                println(script)
+                val srcRegex = Regex("""(file: ")(https?.*?\.m3u8)""")
+                val source =
+                    srcRegex.find(script.toString())?.groupValues?.getOrNull(2)
+                        ?.toString()
+                println(source)
+                callback.invoke(
+                    ExtractorLink(
+                        this.name,
+                        this.name,
+                        source.toString(),
+                        referer = url,
+                        quality = Qualities.Unknown.value,
+                        isM3u8 = true,
                     )
                 )
             } else {
