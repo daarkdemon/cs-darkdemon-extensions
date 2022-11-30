@@ -5,7 +5,7 @@ import com.lagradost.cloudstream3.utils.ExtractorLink
 import com.lagradost.cloudstream3.utils.Qualities
 
 class NPJioTVProvider : MainAPI() { // all providers must be an instance of MainAPI
-    override var mainUrl = "https://nayeemparvez.chadasaniya.cf"
+    override var mainUrl = "https://nayeemparvez.chadasaniya.ml"
     override var name = "NPJioTV+"
     override val hasMainPage = true
     override var lang = "hi"

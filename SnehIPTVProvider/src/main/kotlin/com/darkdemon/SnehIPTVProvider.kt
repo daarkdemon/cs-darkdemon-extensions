@@ -35,8 +35,11 @@ class SnehIPTVProvider : MainAPI() { // all providers must be an instance of Mai
     ): HomePageResponse {
 
         val categories = listOf(
+            "dplus",
+            "hungama",
             "sonyliv",
             "voot",
+            "sunxt",
             "sports",
             "entertainment",
             "movies",
@@ -54,10 +57,11 @@ class SnehIPTVProvider : MainAPI() { // all providers must be an instance of Mai
         val scriptData = getScriptData(mainUrl)
         val response = parseJson<List<IPTV>>(scriptData)
         categories.forEach { cat ->
+            val query = if (cat == "hungama") "hgmtv" else cat
             val results: MutableList<SearchResponse> = mutableListOf()
-            val filtered = response.filter { it.title?.lowercase()?.contains(cat) == true }
+            val filtered = response.filter { it.title?.lowercase()?.contains(query) == true }
             filtered.forEach {
-                val title = it.title?.replace(regex = "\\s\\[[A-Za-z]+]".toRegex(), "").toString()
+                val title = it.title?.replace(regex = "\\s\\[[A-Za-z]+]$".toRegex(), "").toString()
                 val posterUrl = it.tvgLogo.toString()
                 results.add(
                     newMovieSearchResponse(title, title, TvType.Live) {
@@ -76,14 +80,14 @@ class SnehIPTVProvider : MainAPI() { // all providers must be an instance of Mai
         return HomePageResponse(items)
     }
 
-    override suspend fun search(query: String): List<SearchResponse>? {
+    override suspend fun search(query: String): List<SearchResponse> {
 
         val scriptData = getScriptData(mainUrl)
         val response = parseJson<List<IPTV>>(scriptData)
         val searchResults =
             response.filter { it.title?.lowercase()?.contains(query.lowercase()) == true }
         return searchResults.map {
-            val title = it.title?.replace(regex = "\\s\\[[A-Za-z]+]".toRegex(), "").toString()
+            val title = it.title?.replace(regex = "\\s\\[[A-Za-z]+]$".toRegex(), "").toString()
             val posterUrl = it.tvgLogo.toString()
             newMovieSearchResponse(title, title, TvType.Live) {
                 this.posterUrl = posterUrl
@@ -91,18 +95,18 @@ class SnehIPTVProvider : MainAPI() { // all providers must be an instance of Mai
         }
     }
 
-    override suspend fun load(url: String): LoadResponse? {
+    override suspend fun load(url: String): LoadResponse {
 
         val scriptData = getScriptData(mainUrl)
         val response = parseJson<List<IPTV>>(scriptData)
         val searchResults =
             response.filter { it.title?.contains(url.substringAfterLast("/")) == true }
         val title =
-            searchResults[0].title?.replace(regex = "\\s\\[[A-Za-z]+]".toRegex(), "").toString()
+            searchResults[0].title?.replace(regex = "\\s\\[[A-Za-z]+]$".toRegex(), "").toString()
         val posterUrl = searchResults[0].tvgLogo.toString()
         val href =
             if (searchResults[0].url.isNullOrEmpty()) searchResults[0].url1 else searchResults[0].url
-        return newMovieLoadResponse(title, url, TvType.Movie, href) {
+        return newMovieLoadResponse(title, url, TvType.Live, href) {
             this.posterUrl = posterUrl
         }
     }
@@ -113,14 +117,16 @@ class SnehIPTVProvider : MainAPI() { // all providers must be an instance of Mai
         subtitleCallback: (SubtitleFile) -> Unit,
         callback: (ExtractorLink) -> Unit
     ): Boolean {
-
-        val link = if (data.contains("sonyliv")) {
+        val link = if (data.contains("sonyliv") || data.contains("sunxt")) {
             app.get(data).document.selectFirst(".movie__credits a")?.attr("href").toString()
         } else if (data.contains("voot")) {
             app.get(data).document.selectFirst("source")?.attr("src").toString()
         } else {
             val html = app.get(data)
-            html.url.substringBeforeLast("/") + "/${
+            if ( html.document.selectFirst("source")?.attr("src")
+                    !!.startsWith("http")
+            ) html.document.selectFirst("source")
+                ?.attr("src") else html.url.substringBeforeLast("/") + "/${
                 html.document.selectFirst("source")?.attr("src")
             }"
         }.toString()
