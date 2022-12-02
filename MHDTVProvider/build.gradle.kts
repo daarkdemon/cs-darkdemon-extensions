@@ -5,7 +5,7 @@ cloudstream {
     language = "hi"
     // All of these properties are optional, you can safely remove them
 
-    description = "This website support English/Hindi/Bengali/Malayalam/Tamil/Telugu/Punjabi languages"
+    description = "This website support English/Hindi/Kannada/Malayalam/Tamil/Telugu live channels and Hindi Old Movies/Malayalam Movies \n For language in Sports: Please check background image[country flag] of the episode"
     authors = listOf("darkdemon")
 
     /**
@@ -17,8 +17,8 @@ cloudstream {
      * */
     status = 1 // will be 3 if unspecified
     tvTypes = listOf(
-        "Movie",
+        "Live"
     )
 
-    iconUrl = "https://www.google.com/s2/favicons?domain=5movierulz.cm&sz=%size%"
+    iconUrl = "https://www.google.com/s2/favicons?domain=mhdtvworld.xyz&sz=%size%"
 }
