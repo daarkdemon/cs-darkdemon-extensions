@@ -110,7 +110,7 @@ class MHDTVProvider : MainAPI() { // all providers must be an instance of MainAP
                 posterUrl = thumbs
             )
         }
-        return if (!document.select(".sgeneros a").last()?.text()!!.contains("movies")) {
+        return if (document.select(".sgeneros a:contains(Movies)").isNullOrEmpty()) {
             newTvSeriesLoadResponse(title, url, TvType.TvSeries, episodes) {
                 this.posterUrl = poster
             }
