@@ -3,6 +3,7 @@ package com.darkdemon
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.LoadResponse.Companion.addTrailer
+import com.lagradost.cloudstream3.network.CloudflareKiller
 import com.lagradost.cloudstream3.utils.ExtractorLink
 import com.lagradost.cloudstream3.utils.Qualities
 import com.lagradost.cloudstream3.utils.getAndUnpack
@@ -37,6 +38,8 @@ class MHDTVProvider : MainAPI() { // all providers must be an instance of MainAP
         "$mainUrl/channel/pakistani/page/" to "Pakistani TV",
     )
 
+    val interceptor = CloudflareKiller()
+
     override suspend fun getMainPage(
         page: Int,
         request: MainPageRequest
@@ -46,7 +49,7 @@ class MHDTVProvider : MainAPI() { // all providers must be an instance of MainAP
         } else {
             request.data
         }
-        val document = app.get(url).document
+        val document = app.get(url, interceptor = interceptor).document
         val home = document.select("article").mapNotNull {
             it.toSearchResult()
         }
