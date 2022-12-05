@@ -1,11 +1,11 @@
-version = 1
+version = 2
 
 
 cloudstream {
     language = "hi"
     // All of these properties are optional, you can safely remove them
 
-    description = "If the videos are not loading, click on webviewicon(earth icon) on details and play the episode.Skip the ads and now play using app"
+    description = "Watch cartoons and anime in Hindi and English languages"
      authors = listOf("darkdemon")
 
     /**

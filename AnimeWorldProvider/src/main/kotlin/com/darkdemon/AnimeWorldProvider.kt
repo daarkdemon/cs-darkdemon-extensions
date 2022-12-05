@@ -1,15 +1,17 @@
-
 package com.darkdemon
 
+import android.util.Log
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.LoadResponse.Companion.addTrailer
 import com.lagradost.cloudstream3.extractors.XStreamCdn
 import com.lagradost.cloudstream3.utils.*
+import com.lagradost.nicehttp.JsonAsString
 import org.jsoup.nodes.Element
 
 class AnimeWorldProvider : MainAPI() { // all providers must be an instance of MainAPI
     override var mainUrl = "https://anime-world.in"
-    override var name = "Anime World"
+    override var name = "AnimeWorld"
     override val hasMainPage = true
     override var lang = "hi"
     override val hasDownloadSupport = true
@@ -68,7 +70,11 @@ class AnimeWorldProvider : MainAPI() { // all providers must be an instance of M
 
     override suspend fun load(url: String): LoadResponse? {
         val document = app.get(url).document
-
+        if (document.select("h2.title").text().contains("Skip Ad")) {
+            val link = document.selectFirst(".glass-button")!!.attr("onclick").substringAfter("'")
+                .substringBefore("'")
+            bypassRockLinks(link)
+        }
         val title = document.selectFirst(".entry-title")?.text()?.trim() ?: return null
         val poster = fixUrlNull(document.selectFirst(".post-thumbnail img")?.attr("src"))
         val tags = document.select(".genres a").map { it.text() }
@@ -84,21 +90,21 @@ class AnimeWorldProvider : MainAPI() { // all providers must be an instance of M
         }
 
         return if (tvType == TvType.TvSeries) {
-            val episodes : MutableList<Episode> = mutableListOf()
+            val episodes: MutableList<Episode> = mutableListOf()
             document.select(".choose-season ul.sub-menu a").mapNotNull { element ->
                 val html = app.post(
                     url = "$mainUrl/wp-admin/admin-ajax.php",
                     data = mapOf(
                         "action" to "action_select_season",
                         "season" to element.attr("data-season"),
-                        "post" to  element.attr("data-post")
+                        "post" to element.attr("data-post")
                     ),
                     referer = url,
                     headers = mapOf("X-Requested-With" to "XMLHttpRequest")
                 ).document
 
                 episodes += html.select("article").mapNotNull {
-                    val href = fixUrl(it.select("a").attr("href")?: return null)
+                    val href = fixUrl(it.select("a").attr("href") ?: return null)
                     val name = it.select("h2").text().trim()
                     val thumbs = it.select("img").attr("src")
                     val season = element.attr("data-season").toInt()
@@ -141,31 +147,67 @@ class AnimeWorldProvider : MainAPI() { // all providers must be an instance of M
         subtitleCallback: (SubtitleFile) -> Unit,
         callback: (ExtractorLink) -> Unit
     ): Boolean {
+        Log.d("test", data)
 
         val document = app.get(data).document
-        val langPair = document.select(".aa-tbs li").map{it.select("a").attr("href").replace("#","") to it.select(".server").text().split("-").last().trim()}.toMap()
-        document.select(".aa-cn div").map { res ->
-            loadExtractor(
-                res.select("iframe").attr("data-src"),
-                referer = data,
-                subtitleCallback,
-            ){ link ->
-                callback.invoke(ExtractorLink(
-                    link.source,
-                    link.name + " " + langPair[res.attr("id")],
-                    link.url,
-                    link.referer,
-                    Qualities.Unknown.value,
-                    link.isM3u8,
-                    link.headers,
-                    link.extractorData
-                ))
+        Log.d("test", document.select("h2.title").text())
+        if (document.select("h2.title").text().contains("Skip Ad")) {
+            val link = document.selectFirst(".glass-button")!!.attr("onclick").substringAfter("'")
+                .substringBefore("'")
+            bypassRockLinks(link)
+        } else {
+            val langPair = document.select(".aa-tbs li").associate {
+                it.select("a").attr("href").replace("#", "") to it.select(".server").text()
+                    .split("-")
+                    .last().trim()
+            }
+            document.select(".aa-cn div").map { res ->
+
+                loadExtractor(
+                    res.select("iframe").attr("data-src"),
+                    referer = data,
+                    subtitleCallback,
+                ) { link ->
+                    callback.invoke(
+                        ExtractorLink(
+                            link.source,
+                            link.name + " " + langPair[res.attr("id")],
+                            link.url,
+                            link.referer,
+                            Qualities.Unknown.value,
+                            link.isM3u8,
+                            link.headers,
+                            link.extractorData
+                        )
+                    )
+                }
             }
         }
         return true
     }
+
+    private suspend fun bypassRockLinks(link: String) {
+        val apiUrl = "https://api.emilyx.in/api/bypass"
+        val type =
+            if (link.contains("rocklinks")) "rocklinks" else if (link.contains("dulink")) "dulink" else ""
+        val values = mapOf("type" to type, "url" to link)
+        val json = mapper.writeValueAsString(values)
+        val response = app.post(
+            url = apiUrl,
+            headers = mapOf(
+                "Content-Type" to "application/json"
+            ),
+            json = JsonAsString(json)
+        ).parsed<Response>().url
+        app.get(response).document
+    }
+
+    data class Response(
+        @JsonProperty("url") var url: String
+    )
 }
-class Vanfem: XStreamCdn() {
+
+class Vanfem : XStreamCdn() {
     override val name: String = "Vanfem"
     override val mainUrl: String = "https://vanfem.com"
     override var domainUrl: String = "vanfem.com"
