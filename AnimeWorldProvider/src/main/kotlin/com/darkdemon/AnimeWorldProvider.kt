@@ -1,12 +1,12 @@
 package com.darkdemon
 
 import android.util.Log
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.LoadResponse.Companion.addTrailer
 import com.lagradost.cloudstream3.extractors.XStreamCdn
-import com.lagradost.cloudstream3.utils.ExtractorLink
-import com.lagradost.cloudstream3.utils.Qualities
-import com.lagradost.cloudstream3.utils.loadExtractor
+import com.lagradost.cloudstream3.utils.*
+import com.lagradost.nicehttp.JsonAsString
 import org.jsoup.nodes.Element
 
 class AnimeWorldProvider : MainAPI() { // all providers must be an instance of MainAPI
@@ -71,8 +71,9 @@ class AnimeWorldProvider : MainAPI() { // all providers must be an instance of M
     override suspend fun load(url: String): LoadResponse? {
         val document = app.get(url).document
         if (document.select("h2.title").text().contains("Skip Ad")) {
-            //val link = document.selectFirst(".glass-button")!!.attr("onclick").substringAfter("'") .substringBefore("'")
-            bypassRockLinks()
+            val link = document.selectFirst(".glass-button")!!.attr("onclick").substringAfter("'")
+                .substringBefore("'")
+            bypassRockLinks(link)
         }
         val title = document.selectFirst(".entry-title")?.text()?.trim() ?: return null
         val poster = fixUrlNull(document.selectFirst(".post-thumbnail img")?.attr("src"))
@@ -151,8 +152,9 @@ class AnimeWorldProvider : MainAPI() { // all providers must be an instance of M
         val document = app.get(data).document
         Log.d("test", document.select("h2.title").text())
         if (document.select("h2.title").text().contains("Skip Ad")) {
-            //val link = document.selectFirst(".glass-button")!!.attr("onclick").substringAfter("'") .substringBefore("'")
-            bypassRockLinks()
+            val link = document.selectFirst(".glass-button")!!.attr("onclick").substringAfter("'")
+                .substringBefore("'")
+            bypassRockLinks(link)
         } else {
             val langPair = document.select(".aa-tbs li").associate {
                 it.select("a").attr("href").replace("#", "") to it.select(".server").text()
@@ -184,11 +186,25 @@ class AnimeWorldProvider : MainAPI() { // all providers must be an instance of M
         return true
     }
 
-    private suspend fun bypassRockLinks() {
-        val response =
-            "$mainUrl/api/final.php?key=JDJ5JDEwJHZVRnpRM3FrdklMRUZMM1g1aW9oL2VkQzVwM3NpQkxvdE10TktCNko4RXFheFViTmtMdUdP"
+    private suspend fun bypassRockLinks(link: String) {
+        val apiUrl = "https://api.emilyx.in/api/bypass"
+        val type =
+            if (link.contains("rocklinks")) "rocklinks" else if (link.contains("dulink")) "dulink" else ""
+        val values = mapOf("type" to type, "url" to link)
+        val json = mapper.writeValueAsString(values)
+        val response = app.post(
+            url = apiUrl,
+            headers = mapOf(
+                "Content-Type" to "application/json"
+            ),
+            json = JsonAsString(json)
+        ).parsed<Response>().url
         app.get(response).document
     }
+
+    data class Response(
+        @JsonProperty("url") var url: String
+    )
 }
 
 class Vanfem : XStreamCdn() {
