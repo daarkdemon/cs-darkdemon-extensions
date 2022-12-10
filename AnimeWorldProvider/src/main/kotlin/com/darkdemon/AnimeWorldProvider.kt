@@ -6,7 +6,9 @@ import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.LoadResponse.Companion.addTrailer
 import com.lagradost.cloudstream3.extractors.XStreamCdn
 import com.lagradost.cloudstream3.utils.*
-import com.lagradost.nicehttp.JsonAsString
+import com.lagradost.nicehttp.Requests
+import com.lagradost.nicehttp.Session
+import kotlinx.coroutines.delay
 import org.jsoup.nodes.Element
 
 class AnimeWorldProvider : MainAPI() { // all providers must be an instance of MainAPI
@@ -187,19 +189,36 @@ class AnimeWorldProvider : MainAPI() { // all providers must be an instance of M
     }
 
     private suspend fun bypassRockLinks(link: String) {
-        val apiUrl = "https://api.emilyx.in/api/bypass"
-        val type =
-            if (link.contains("rocklinks")) "rocklinks" else if (link.contains("dulink")) "dulink" else ""
-        val values = mapOf("type" to type, "url" to link)
-        val json = mapper.writeValueAsString(values)
-        val response = app.post(
-            url = apiUrl,
+        val domain =
+            if (link.contains("rocklinks")) "https://blog.disheye.com" else "https://cac.teckypress.in"
+        val baseUrl =
+            if (link.contains("rocklinks")) "$domain/${link.substringAfterLast("/")}?quelle=" else "$domain/${
+                link.substringAfterLast("/")
+            }"
+        val client = Requests().baseClient
+        val session = Session(client)
+        val html = session.get(url = baseUrl, referer = baseUrl)
+        fun encode(input: String): String = java.net.URLEncoder.encode(input, "utf-8")
+        val document = html.document
+        val data = document.select("#go-link input")
+            .mapNotNull { it.attr("name").toString() to encode(it.attr("value").toString()) }
+            .toMap()
+
+        delay(10000L)
+        val response = session.post(
+            url = "$domain/links/go",
             headers = mapOf(
-                "Content-Type" to "application/json"
+                "Content-Type" to "application/x-www-form-urlencoded; charset=UTF-8",
+                "X-Requested-With" to "XMLHttpRequest",
+                "Accept" to "application/json, text/javascript, ; q=0.01",
+                "Accept-Language" to "en-US,en;q=0.5",
+                //"Accept-Encoding" to "gzip"
             ),
-            json = JsonAsString(json)
-        ).parsed<Response>().url
-        app.get(response).document
+            data = data,
+            referer = baseUrl
+        ).text
+        val bypassedLink = AppUtils.parseJson<Response>(response).url
+        app.get(bypassedLink).document
     }
 
     data class Response(

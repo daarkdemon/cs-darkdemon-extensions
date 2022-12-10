@@ -1,12 +1,12 @@
-version = 2
+version = 4
 
 
 cloudstream {
     language = "hi"
     // All of these properties are optional, you can safely remove them
 
-    description = "Watch cartoons and anime in Hindi and English languages"
-     authors = listOf("darkdemon")
+    description = "Please wait for 10seconds to bypass the ads"
+    authors = listOf("darkdemon")
 
     /**
      * Status int as the following:
