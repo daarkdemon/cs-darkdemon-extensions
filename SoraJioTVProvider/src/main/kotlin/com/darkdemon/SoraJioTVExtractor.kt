@@ -126,6 +126,22 @@ object SoraJioTVExtractor: SoraJioTVProvider() {
             )
         )
     }
+    fun invokeBF(
+        id: String? = null,
+        callback: (ExtractorLink) -> Unit
+    ){
+        val link = "$BFJioTV/autoq.php?c=$id"
+        callback.invoke(
+            ExtractorLink(
+                this.name,
+                "BFJioTV",
+                link,
+                referer = "",
+                quality = Qualities.Unknown.value,
+                isM3u8 = true,
+            )
+        )
+    }
     fun invokeRPK(
         id: String? = null,
         callback: (ExtractorLink) -> Unit
