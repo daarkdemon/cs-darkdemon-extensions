@@ -47,6 +47,7 @@ open class SoraJioTVProvider : MainAPI() { // all providers must be an instance 
         const val IJioTV = "https://epic-austin.128-199-17-57.plesk.page"
         const val SJioTV = "https://the-nayeemparvez.ml"
         const val FSJioTV = "https://tv.freeseries.eu.org"
+        const val BFJioTV = "https://jio.buttflix.best"
         const val FHJioTV = "https://filmyhub.ga"
         const val TSJioTV = "https://tvstream.fun"
         const val RPKJioTV = "http://ranapk-nxt.ml"
