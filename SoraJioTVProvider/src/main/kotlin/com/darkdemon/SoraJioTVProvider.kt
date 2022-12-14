@@ -1,5 +1,6 @@
 package com.darkdemon
 
+import com.darkdemon.SoraJioTVExtractor.invokeBF
 import com.darkdemon.SoraJioTVExtractor.invokeFH
 import com.darkdemon.SoraJioTVExtractor.invokeFS
 import com.darkdemon.SoraJioTVExtractor.invokeGDL
@@ -184,6 +185,12 @@ open class SoraJioTVProvider : MainAPI() { // all providers must be an instance 
             },
             {
                 invokeRPK(
+                    result.logoUrl?.substringBefore(".png"),
+                    callback
+                )
+            },
+            {
+                invokeBF(
                     result.logoUrl?.substringBefore(".png"),
                     callback
                 )
