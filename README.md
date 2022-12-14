@@ -1,6 +1,6 @@
 <div align="center">
 
-# *Horis-Extensions*
+# *Darkdemon-Extension*
 
 > Used to load providers for [Cloudstream](https://github.com/recloudstream/cloudstream)
 
