@@ -4,16 +4,16 @@ import com.darkdemon.SoraJioTVExtractor.invokeBF
 import com.darkdemon.SoraJioTVExtractor.invokeFH
 import com.darkdemon.SoraJioTVExtractor.invokeFS
 import com.darkdemon.SoraJioTVExtractor.invokeGDL
-import com.darkdemon.SoraJioTVExtractor.invokeI
+import com.darkdemon.SoraJioTVExtractor.invokeRPK
+import com.darkdemon.SoraJioTVExtractor.invokeSW
+import com.darkdemon.SoraJioTVExtractor.invokeTML
+import com.darkdemon.SoraJioTVExtractor.invokeTS
+import com.darkdemon.SoraJioTVExtractor.invokeZL
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.utils.AppUtils.parseJson
 import com.lagradost.cloudstream3.utils.AppUtils.toJson
 import com.lagradost.cloudstream3.utils.ExtractorLink
-import com.darkdemon.SoraJioTVExtractor.invokeNP
-import com.darkdemon.SoraJioTVExtractor.invokeRPK
-import com.darkdemon.SoraJioTVExtractor.invokeS
-import com.darkdemon.SoraJioTVExtractor.invokeTS
 
 open class SoraJioTVProvider : MainAPI() { // all providers must be an instance of MainAPI
     override var name = "SoraJioTV"
@@ -29,7 +29,7 @@ open class SoraJioTVProvider : MainAPI() { // all providers must be an instance 
     )
 
     data class Result(
-        @JsonProperty("channel_id") var channelId: Int? = null,
+        @JsonProperty("channel_id") var channelId: String? = null,
         @JsonProperty("channel_order") var channelOrder: String? = null,
         @JsonProperty("channel_name") var channelName: String? = null,
         @JsonProperty("channelCategoryId") var channelCategoryId: Int? = null,
@@ -42,16 +42,16 @@ open class SoraJioTVProvider : MainAPI() { // all providers must be an instance 
 
     companion object {
         private const val jsonUrl =
-            "https://raw.githubusercontent.com/daarkdemon/jiotvchannels/main/channels.json"
-        const val NPJioTV = "https://nayeemparvez.chadasaniya.cf"
+            "https://raw.githubusercontent.com/daarkdemon/jiotvchannels/test/channels.json"
         const val GDLJioTV = "https://tv.googledrivelinks.com"
-        const val IJioTV = "https://epic-austin.128-199-17-57.plesk.page"
-        const val SJioTV = "https://the-nayeemparvez.ml"
         const val FSJioTV = "https://tv.freeseries.eu.org"
         const val BFJioTV = "https://jio.buttflix.best"
         const val FHJioTV = "https://filmyhub.ga"
         const val TSJioTV = "https://tvstream.fun"
         const val RPKJioTV = "http://ranapk-nxt.ml"
+        const val TMLJioTV = "http://techmaxlive.ml"
+        const val SWJioTV = "https://spidyworld.ga"
+        const val ZLZee5 = "https://zeeliv.tk"
     }
 
     override suspend fun getMainPage(
@@ -59,6 +59,8 @@ open class SoraJioTVProvider : MainAPI() { // all providers must be an instance 
         request: MainPageRequest
     ): HomePageResponse {
         val categories = mapOf(
+            "Zee5" to 30,
+            "Sonyliv" to 31,
             "Sports" to 8,
             "Entertainment" to 5,
             "Movies" to 6,
@@ -80,10 +82,11 @@ open class SoraJioTVProvider : MainAPI() { // all providers must be an instance 
             val filtered = response.filter { it.channelCategoryId == cat.value }
             filtered.forEach {
                 val title = it.channelName.toString()
-                val posterUrl = "http://jiotv.catchup.cdn.jio.com/dare_images/images/${it.logoUrl}"
+                val posterUrl =
+                    if (it.logoUrl?.startsWith("https://") == true) it.logoUrl else "http://jiotv.catchup.cdn.jio.com/dare_images/images/${it.logoUrl}"
                 val quality = if (it.isHD == true) "HD" else ""
                 results.add(
-                    newMovieSearchResponse(title, title, TvType.Live) {
+                    newMovieSearchResponse(title, it.channelId.toString(), TvType.Live) {
                         this.posterUrl = posterUrl
                         this.quality = getQualityFromString(quality)
                     }
@@ -107,8 +110,9 @@ open class SoraJioTVProvider : MainAPI() { // all providers must be an instance 
 
         return searchResults.map {
             val title = it.channelName.toString()
-            val posterUrl = "http://jiotv.catchup.cdn.jio.com/dare_images/images/${it.logoUrl}"
-            newMovieSearchResponse(title, title, TvType.Live) {
+            val posterUrl =
+                if (it.logoUrl?.startsWith("https://") == true) it.logoUrl else "http://jiotv.catchup.cdn.jio.com/dare_images/images/${it.logoUrl}"
+            newMovieSearchResponse(title, it.channelId.toString(), TvType.Live) {
                 this.posterUrl = posterUrl
             }
         }
@@ -117,7 +121,7 @@ open class SoraJioTVProvider : MainAPI() { // all providers must be an instance 
     override suspend fun load(url: String): LoadResponse {
         val response = app.get(jsonUrl).parsed<Channels>().result
         val searchResults =
-            response.filter { it.channelName?.contains(url.substringAfterLast("/")) == true }
+            response.filter { it.channelId?.contains(url.substringAfterLast("/")) == true }
         val title = searchResults[0].channelName.toString()
         val posterUrl =
             "http://jiotv.catchup.cdn.jio.com/dare_images/images/${searchResults[0].logoUrl}"
@@ -125,6 +129,7 @@ open class SoraJioTVProvider : MainAPI() { // all providers must be an instance 
             title, title, TvType.Live, Result(
                 channelId = searchResults[0].channelId,
                 channelName = title,
+                channelCategoryId = searchResults[0].channelCategoryId,
                 logoUrl = searchResults[0].logoUrl
             ).toJson()
         ) {
@@ -140,63 +145,91 @@ open class SoraJioTVProvider : MainAPI() { // all providers must be an instance 
     ): Boolean {
 
         val result = parseJson<Result>(data)
-        argamap(
-            {
-                invokeNP(
-                    result.channelId,
-                    callback
+        when (result.channelCategoryId) {
+            30 -> {
+                argamap(
+                    {
+                        invokeZL(
+                            result.channelId,
+                            callback
+                        )
+                    },
+                    {
+                        invokeTML(
+                            result.channelId,
+                            result.channelCategoryId,
+                            callback
+                        )
+                    }
                 )
-            },
-            {
-                invokeS(
-                    result.channelId,
-                    callback
+
+            }
+            31 -> {
+                argamap(
+                    {
+                        invokeTML(
+                            result.logoUrl?.substringBefore(".png"),
+                            result.channelCategoryId,
+                            callback
+                        )
+                    }
                 )
-            },
-            {
-                invokeGDL(
-                    result.logoUrl?.substringBefore(".png"),
-                    callback
-                )
-            },
-            {
-                invokeI(
-                    result.logoUrl?.substringBefore(".png"),
-                    callback
-                )
-            },
-            {
-                invokeFS(
-                    result.logoUrl?.substringBefore(".png"),
-                    callback
-                )
-            },
-            {
-                invokeFH(
-                    result.logoUrl?.substringBefore(".png"),
-                    callback
-                )
-            },
-            {
-                invokeTS(
-                    result.logoUrl?.substringBefore(".png"),
-                    callback
-                )
-            },
-            {
-                invokeRPK(
-                    result.logoUrl?.substringBefore(".png"),
-                    callback
-                )
-            },
-            {
-                invokeBF(
-                    result.logoUrl?.substringBefore(".png"),
-                    callback
+
+            }
+            else -> {
+                argamap(
+                    {
+                        invokeGDL(
+                            result.logoUrl?.substringBefore(".png"),
+                            callback
+                        )
+                    },
+                    {
+                        invokeFS(
+                            result.logoUrl?.substringBefore(".png"),
+                            callback
+                        )
+                    },
+                    {
+                        invokeFH(
+                            result.logoUrl?.substringBefore(".png"),
+                            callback
+                        )
+                    },
+                    {
+                        invokeTS(
+                            result.logoUrl?.substringBefore(".png"),
+                            callback
+                        )
+                    },
+                    {
+                        invokeRPK(
+                            result.logoUrl?.substringBefore(".png"),
+                            callback
+                        )
+                    },
+                    {
+                        invokeBF(
+                            result.logoUrl?.substringBefore(".png"),
+                            callback
+                        )
+                    },
+                    {
+                        invokeTML(
+                            result.logoUrl?.substringBefore(".png"),
+                            result.channelCategoryId,
+                            callback
+                        )
+                    },
+                    {
+                        invokeSW(
+                            result.logoUrl?.substringBefore(".png"),
+                            callback
+                        )
+                    }
                 )
             }
-        )
-
+        }
         return true
     }
 }

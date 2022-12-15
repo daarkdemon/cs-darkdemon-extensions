@@ -9,41 +9,6 @@ import com.lagradost.cloudstream3.utils.Qualities
 //
 object SoraJioTVExtractor: SoraJioTVProvider() {
 
-    suspend fun invokeNP(
-        id: Int? = null,
-        callback: (ExtractorLink) -> Unit
-    ){
-        val document = app.get("$NPJioTV/play.php?id=$id").document
-        val link =  "$NPJioTV/${document.selectFirst("source")?.attr("src")}"
-        callback.invoke(
-            ExtractorLink(
-                this.name,
-                "NPJioTV",
-                link,
-                referer = "",
-                quality = Qualities.Unknown.value,
-                isM3u8 = true,
-            )
-        )
-    }
-    suspend fun invokeS(
-        id: Int? = null,
-        callback: (ExtractorLink) -> Unit
-    ){
-        val document = app.get("$SJioTV/play.php?id=$id").document
-        val link =  "$SJioTV/${document.selectFirst("source")?.attr("src")}"
-        callback.invoke(
-            ExtractorLink(
-                this.name,
-                "SJioTV",
-                link,
-                referer = "",
-                quality = Qualities.Unknown.value,
-                isM3u8 = true,
-            )
-        )
-    }
-
     fun invokeGDL(
         id: String? = null,
         callback: (ExtractorLink) -> Unit
@@ -53,23 +18,6 @@ object SoraJioTVExtractor: SoraJioTVProvider() {
             ExtractorLink(
                 this.name,
                 "GDLJioTV",
-                link,
-                referer = "",
-                quality = Qualities.Unknown.value,
-                isM3u8 = true,
-            )
-        )
-    }
-
-    fun invokeI(
-        id: String? = null,
-        callback: (ExtractorLink) -> Unit
-    ){
-        val link = "$IJioTV/https://epic-austin.128-199-17-57.plesk.page/$id"
-        callback.invoke(
-            ExtractorLink(
-                this.name,
-                "IJioTV",
                 link,
                 referer = "",
                 quality = Qualities.Unknown.value,
@@ -151,6 +99,87 @@ object SoraJioTVExtractor: SoraJioTVProvider() {
             ExtractorLink(
                 this.name,
                 "RPKJioTV",
+                link,
+                referer = "",
+                quality = Qualities.Unknown.value,
+                isM3u8 = true,
+            )
+        )
+    }
+
+    suspend fun invokeTML(
+        id: String? = null,
+        category: Int? = null,
+        callback: (ExtractorLink) -> Unit
+    ) {
+        if (category == 30) {
+            val link = "$TMLJioTV/zee5/zeeapi.php?c=$id"
+            callback.invoke(
+                ExtractorLink(
+                    this.name,
+                    "TMLZee5",
+                    link,
+                    referer = "",
+                    quality = Qualities.Unknown.value,
+                    isM3u8 = true,
+                )
+            )
+
+        } else if (category == 31) {
+            val document = app.get("$TMLJioTV/sonyliv/channels/$id").document
+            val link = document.select("source").attr("src")
+            callback.invoke(
+                ExtractorLink(
+                    this.name,
+                    "TMLSonyLiv",
+                    link,
+                    referer = "",
+                    quality = Qualities.Unknown.value,
+                    isM3u8 = true,
+                )
+            )
+
+        } else {
+            val link = "$TMLJioTV/autoq.php?c=$id"
+            callback.invoke(
+                ExtractorLink(
+                    this.name,
+                    "TMLJioTV",
+                    link,
+                    referer = "",
+                    quality = Qualities.Unknown.value,
+                    isM3u8 = true,
+                )
+            )
+        }
+    }
+
+    fun invokeSW(
+        id: String? = null,
+        callback: (ExtractorLink) -> Unit
+    ) {
+        val link = "$SWJioTV/app/master.php?id=$id"
+        callback.invoke(
+            ExtractorLink(
+                this.name,
+                "SWJioTV",
+                link,
+                referer = "",
+                quality = Qualities.Unknown.value,
+                isM3u8 = true,
+            )
+        )
+    }
+
+    fun invokeZL(
+        id: String? = null,
+        callback: (ExtractorLink) -> Unit
+    ) {
+        val link = "$ZLZee5/api.php?c=$id"
+        callback.invoke(
+            ExtractorLink(
+                this.name,
+                "ZLZee5",
                 link,
                 referer = "",
                 quality = Qualities.Unknown.value,
