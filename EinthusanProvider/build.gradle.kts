@@ -5,7 +5,8 @@ cloudstream {
     language = "hi"
     // All of these properties are optional, you can safely remove them
 
-    description = "This website support Hindi/Marathi/Kannada/Malayalam/Tamil/Telugu/Bengali/Punjabi\nFor Searching format: language,title\nexample: hindi,kantara"
+    description =
+        "This website support Hindi/Marathi/Kannada/Malayalam/Tamil/Telugu/Bengali/Punjabi\nFor Searching format: language,title\nexample: hindi,kantara"
     authors = listOf("darkdemon")
 
     /**
@@ -15,7 +16,7 @@ cloudstream {
      * 2: Slow
      * 3: Beta only
      * */
-    status = 1 // will be 3 if unspecified
+    status = 0 // will be 3 if unspecified
     tvTypes = listOf(
         "Movie",
     )
