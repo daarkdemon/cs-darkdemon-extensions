@@ -10,7 +10,7 @@ import org.jsoup.nodes.Element
 import java.net.URLEncoder
 
 class IBommaProvider : MainAPI() { // all providers must be an instance of MainAPI
-    override var mainUrl = "https://ww2.ibomma.one/telugu-movies"
+    override var mainUrl = "https://ww2.ibomma.cx/telugu-movies"
     override var name = "IBomma"
     override val hasMainPage = true
     override var lang = "te"
