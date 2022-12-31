@@ -190,7 +190,7 @@ class AnimeWorldProvider : MainAPI() { // all providers must be an instance of M
 
     private suspend fun bypassRockLinks(link: String) {
         val domain =
-            if (link.contains("rocklinks")) "https://blog.disheye.com" else "https://cac.teckypress.in"
+            if (link.contains("rocklinks")) "https://link.techyone.co" else "https://cac.teckypress.in"
         val baseUrl =
             if (link.contains("rocklinks")) "$domain/${link.substringAfterLast("/")}?quelle=" else "$domain/${
                 link.substringAfterLast("/")
