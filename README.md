@@ -18,13 +18,13 @@
   <a href="">
     <img src="https://img.shields.io/github/last-commit/daarkdemon/cs-darkdemon-extensions" alt="last update" />
   </a>
-  <a href="https://github.com/hexated/cloudstream-extensions-hexated/network/members">
+  <a href="https://github.com/daarkdemon/cs-darkdemon-extensions/network/members">
     <img src="https://img.shields.io/github/forks/daarkdemon/cs-darkdemon-extensions" alt="forks" />
   </a>
-  <a href="https://github.com/hexated/cloudstream-extensions-hexated/stargazers">
+  <a href="https://github.com/daarkdemon/cs-darkdemon-extensions/stargazers">
     <img src="https://img.shields.io/github/stars/daarkdemon/cs-darkdemon-extensions" alt="stars" />
   </a>
-  <a href="https://github.com/hexated/cloudstream-extensions-hexated/issues/">
+  <a href="https://github.com/daarkdemon/cs-darkdemon-extensions/issues/">
     <img src="https://img.shields.io/github/issues/daarkdemon/cs-darkdemon-extensions" alt="open issues" />
   </a>
   <a href="https://github.com/AmineSoukara/EgyBest-API">
