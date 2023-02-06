@@ -11,7 +11,7 @@ import com.lagradost.cloudstream3.utils.loadExtractor
 import org.jsoup.nodes.Element
 
 class PrmoviesProvider : MainAPI() { // all providers must be an instance of MainAPI
-    override var mainUrl = "https://prmovies.rest"
+    override var mainUrl = "https://prmovies.bio"
     override var name = "Prmovies"
     override val hasMainPage = true
     override var lang = "hi"

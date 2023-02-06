@@ -1,4 +1,4 @@
-version = 5
+version = 6
 
 
 cloudstream {
@@ -21,5 +21,5 @@ cloudstream {
         "Movie",
     )
 
-    iconUrl = "https://www.google.com/s2/favicons?domain=prmovies.rest&sz=%size%"
+    iconUrl = "https://www.google.com/s2/favicons?domain=prmovies.bio&sz=%size%"
 }
