@@ -12,7 +12,7 @@ import org.jsoup.nodes.Element
 import kotlin.math.floor
 
 class MHDTVProvider : MainAPI() { // all providers must be an instance of MainAPI
-    override var mainUrl = "https://mhdtvworld.xyz"
+    override var mainUrl = "https://mhdtvworld.me"
     override var name = "MHDTVWorld"
     override val hasMainPage = true
     override var lang = "hi"
