@@ -1,4 +1,4 @@
-version = 3
+version = 4
 
 
 cloudstream {
@@ -20,5 +20,5 @@ cloudstream {
         "Live"
     )
 
-    iconUrl = "https://www.google.com/s2/favicons?domain=mhdtvworld.xyz&sz=%size%"
+    iconUrl = "https://www.google.com/s2/favicons?domain=mhdtvworld.me&sz=%size%"
 }
