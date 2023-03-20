@@ -10,7 +10,7 @@ import com.lagradost.cloudstream3.utils.loadExtractor
 import org.jsoup.nodes.Element
 
 class FivemovierulzProvider : MainAPI() { // all providers must be an instance of MainAPI
-    override var mainUrl = "https://5movierulz.cm"
+    override var mainUrl = "https://ww2.5movierulz.sh/"
     override var name = "5movierulz"
     override val hasMainPage = true
     override var lang = "hi"
