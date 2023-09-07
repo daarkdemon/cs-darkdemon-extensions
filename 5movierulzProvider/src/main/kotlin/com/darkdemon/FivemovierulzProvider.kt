@@ -10,7 +10,7 @@ import com.lagradost.cloudstream3.utils.loadExtractor
 import org.jsoup.nodes.Element
 
 class FivemovierulzProvider : MainAPI() { // all providers must be an instance of MainAPI
-    override var mainUrl = "https://5movierulz.cm"
+    override var mainUrl = "https://ww4.5movierulz.sbs"
     override var name = "5movierulz"
     override val hasMainPage = true
     override var lang = "hi"
@@ -20,14 +20,14 @@ class FivemovierulzProvider : MainAPI() { // all providers must be an instance o
     )
 
     override val mainPage = mainPageOf(
-        "$mainUrl/category/featured/page/" to "Popular Movies",
-        "$mainUrl/category/hollywood-movie-2021/page/" to "English",
-        "$mainUrl/bollywood-movie-free/page/" to "Hindi",
-        "$mainUrl/tamil-movie-free/page/" to "Tamil",
-        "$mainUrl/telugu-movie/page/" to "Telugu",
-        "$mainUrl/malayalam-movie-online/page/" to "Malayalam",
-        "$mainUrl/category/bengali-movie/page/" to "Bengali",
-        "$mainUrl/category/punjabi-movie/page/" to "Punjabi",
+        "$mainUrl/category/featured/" to "Popular Movies",
+        "$mainUrl/category/hollywood-movie-2023/" to "English",
+        "$mainUrl/bollywood-movie-free/" to "Hindi",
+        "$mainUrl/tamil-movie-free/" to "Tamil",
+        "$mainUrl/telugu-movie/" to "Telugu",
+        "$mainUrl/malayalam-movie-online/" to "Malayalam",
+        "$mainUrl/category/bengali-movie/" to "Bengali",
+        "$mainUrl/category/punjabi-movie/" to "Punjabi",
     )
 
     override suspend fun getMainPage(
