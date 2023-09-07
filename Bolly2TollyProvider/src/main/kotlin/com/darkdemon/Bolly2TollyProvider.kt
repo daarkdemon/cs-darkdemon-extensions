@@ -8,7 +8,7 @@ import com.lagradost.cloudstream3.utils.loadExtractor
 import org.jsoup.nodes.Element
 
 class Bolly2TollyProvider : MainAPI() { // all providers must be an instance of MainAPI
-    override var mainUrl = "https://www.bolly2tolly.desi"
+    override var mainUrl = "https://www.bolly2tolly.wiki"
     override var name = "Bolly2Tolly"
     override val hasMainPage = true
     override var lang = "hi"
@@ -19,14 +19,14 @@ class Bolly2TollyProvider : MainAPI() { // all providers must be an instance of 
     )
 
     override val mainPage = mainPageOf(
-        "$mainUrl/page/" to "Latest ",
-        "$mainUrl/category/english-movies/page/" to "English",
-        "$mainUrl/category/hindi-movies/page/" to "Hindi",
-        "$mainUrl/category/telugu-movies/page/" to "Telugu",
-        "$mainUrl/category/tamil-movies/page/" to "Tamil",
-        "$mainUrl/category/kannada-movies/page/" to "Kannada",
-        "$mainUrl/category/malayalam-movies/page/" to "Malayalam",
-        "$mainUrl/category/bengali-movies/page/" to "Bengali"
+        "$mainUrl/" to "Latest ",
+        "$mainUrl/category/english-movies/" to "English",
+        "$mainUrl/category/hindi-movies/" to "Hindi",
+        "$mainUrl/category/telugu-movies/" to "Telugu",
+        "$mainUrl/category/tamil-movies/" to "Tamil",
+        "$mainUrl/category/kannada-movies/" to "Kannada",
+        "$mainUrl/category/malayalam-movies/" to "Malayalam",
+        "$mainUrl/category/bengali-movies/" to "Bengali"
 
 
     )
