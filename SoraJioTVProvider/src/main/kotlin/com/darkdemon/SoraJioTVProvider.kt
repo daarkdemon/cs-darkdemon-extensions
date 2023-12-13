@@ -52,6 +52,8 @@ open class SoraJioTVProvider : MainAPI() { // all providers must be an instance 
         const val TMLJioTV = "http://techmaxlive.ml"
         const val SWJioTV = "https://spidyworld.ga"
         const val ZLZee5 = "https://zeeliv.tk"
+        const val Mad = "https://madstream.live"
+        const val robi = "https://rogstream.fun"
     }
 
     override suspend fun getMainPage(
